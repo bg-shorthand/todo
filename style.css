@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  border-radius: 10px;
+  width: 400px;
+  margin: 10px auto;
+  background-color: lightgray;
+  text-align: center;
+}
+.head-line {
+  line-height: .8;
+}
+.head-line div {
+  font-size: 2.3rem;
+}
+
+
+.todos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.todo {
+  border: 1px solid black;
+  margin: 5px 0;
+  padding: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+.todos:last-child {
+  margin-bottom: 20px;
+}
