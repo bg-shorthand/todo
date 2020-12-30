@@ -10,6 +10,7 @@
 }
 .head-line {
   line-height: .8;
+  font-weight: 100;
 }
 .head-line div {
   font-size: 2.3rem;
@@ -22,7 +23,6 @@
   padding: 0;
 }
 .todo {
-  border: 1px solid black;
   margin: 5px 0;
   padding: 0;
   display: flex;
