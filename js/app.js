@@ -2,6 +2,10 @@ let todos = [];
 
 const $todos = document.querySelector('.todos');
 const $inputTodo = document.querySelector('.input-todo');
+const $completeAll = document.getElementById('ck-complete-all');
+const $clearCompletedButton = document.querySelector('.clear-completed > .btn');
+const $completedTodos = document.querySelector('.completed-todos');
+const $activeTodos = document.querySelector('.active-todos');
 
 (() => {
   // 서버에서 자료 받아옴
@@ -43,34 +47,53 @@ const render = () => {
     $fragment.appendChild($todo);
     $todos.appendChild($fragment);
   })
+
+  $completeAll.checked = !todos.map(todo => todo.completed).includes(false)
+  $completedTodos.textContent = todos.filter(todo => todo.completed).length;
+  $activeTodos.textContent = todos.length - $completedTodos.textContent
 }
 
 document.addEventListener('DOMContentLoaded', render);
 
 const addTodo = () => {
-  todos = [{ id: todos.length ? Math.max(...todos.map(v => v.id)) + 1 : 1, content: $inputTodo.value, completed: false }, ...todos]
+  todos = [{ id: todos.length ? Math.max(...todos.map(v => v.id)) + 1 : 1, content: $inputTodo.value, completed: false }, ...todos];
+  render();
 }
 const removeTodo = target => {
   todos = todos.filter(todo => todo.id !== +target.parentNode.id);
+  render();
 }
 const completedTodo = target => {
   todos = todos.map(todo => +target.parentNode.id === todo.id ? { ...todo, completed: !todo.completed } : todo);
+  render();
+}
+const checkingCompleteAll = (target) => {
+  todos = target.checked ? todos.map(todo => ({...todo, completed: true})) : todos.map(todo => ({...todo, completed: false}));
+  render();
+}
+const clearCompleted = () => {
+  todos = todos.filter(todo => !todo.completed);
+  render();
 }
 
 $inputTodo.onkeyup = e => {
-  if (e.key !== 'Enter') return;
+  if (e.key !== 'Enter' || !e.target.value) return;
   addTodo();
   $inputTodo.value = '';
-  render();
 }
 
 $todos.onclick = e => {
   if (!e.target.matches('.todos .remove-todo')) return;
   removeTodo(e.target);
-  render();
 }
 
 $todos.onchange = e => {
   completedTodo(e.target);
-  render();
 }
+
+$completeAll.onchange = e => {
+  checkingCompleteAll(e.target);
+}
+
+$clearCompletedButton.onclick = clearCompleted;
+
